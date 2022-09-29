@@ -1,5 +1,5 @@
-var COLS = 10, ROWS = 20;
-var board = [];
+var COLS = 10, ROWS = 20;//tamaño del campo de tetris
+var board = [];//array que toma el valor de cada parte
 var lose;
 var interval;
 var intervalRender;
@@ -25,11 +25,11 @@ var colors = [
     'cyan', 'orange', 'blue', 'yellow', 'red', 'green', 'purple'
 ];
 
-// creates a new 4x4 shape in global variable 'current'
-// 4x4 so as to cover the size when the shape is rotated
+// Crea un area 4x4 global con la variable current
+// y el 4x4 se utiliza para cubrir la pieza para rotarla
 function newShape() {
     var id = Math.floor( Math.random() * shapes.length );
-    var shape = shapes[ id ]; // maintain id for color filling
+    var shape = shapes[ id ]; // Mantiene el ide para el color de la pieza 
 
     current = [];
     for ( var y = 0; y < 4; ++y ) {
@@ -45,14 +45,14 @@ function newShape() {
         }
     }
     
-    // new shape starts to move
-    freezed = false;
-    // position where the shape will evolve
+    // La nueva pieza empieza a moverse
+    freezed = false;//estado falso para seguir moviendose
+    // se mueve a la izquierda 5 pasos mas
     currentX = 5;
     currentY = 0;
 }
 
-// clears the board
+// Limpia la zona de juego
 function init() {
     for ( var y = 0; y < ROWS; ++y ) {
         board[ y ] = [];
@@ -62,7 +62,7 @@ function init() {
     }
 }
 
-// keep the element moving down, creating new shapes and clearing lines
+// Mantiene el current moviendose para abajo, creando una nueva pieza y limpiando las lineas anteriores
 function tick() {
     if ( valid( 0, 1 ) ) {
         ++currentY;
@@ -80,7 +80,7 @@ function tick() {
     }
 }
 
-// stop shape at its position and fix it to board
+//Para la pieza current y dibuja su posicion en el board 
 function freeze() {
     for ( var y = 0; y < 4; ++y ) {
         for ( var x = 0; x < 4; ++x ) {
@@ -92,7 +92,7 @@ function freeze() {
     freezed = true;
 }
 
-// returns rotates the rotated shape 'current' perpendicularly anticlockwise
+// Retorna el nuevo current que a rotado en sentido antihorario 
 function rotate( current ) {
     var newCurrent = [];
     for ( var y = 0; y < 4; ++y ) {
@@ -105,7 +105,7 @@ function rotate( current ) {
     return newCurrent;
 }
 
-// check if any lines are filled and clear them
+// REvisa si las lineas estan llenas para limpiarlas automaticamente
 function clearLines() {
     for ( var y = ROWS - 1; y >= 0; --y ) {
         var rowFilled = true;
@@ -116,6 +116,8 @@ function clearLines() {
             }
         }
         if ( rowFilled ) {
+            //agarra archivos del proyecto para realizar un sonido claro para cuando 
+            //una linea esta llena y la limpia.
             document.getElementById( 'clearsound' ).play();
             for ( var yy = y; yy > 0; --yy ) {
                 for ( var x = 0; x < COLS; ++x ) {
@@ -126,7 +128,7 @@ function clearLines() {
         }
     }
 }
-
+//captura la tecla presionada
 function keyPress( key ) {
     switch ( key ) {
         case 'left':
@@ -159,7 +161,7 @@ function keyPress( key ) {
     }
 }
 
-// checks if the resulting position of current shape will be feasible
+// Revisa que el movimiento es valido para mover current 
 function valid( offsetX, offsetY, newCurrent ) {
     offsetX = offsetX || 0;
     offsetY = offsetY || 0;
@@ -177,8 +179,8 @@ function valid( offsetX, offsetY, newCurrent ) {
                   || y + offsetY >= ROWS
                   || x + offsetX >= COLS ) {
                     if (offsetY == 1 && freezed) {
-                        lose = true; // lose if the current shape is settled at the top most row
-                        document.getElementById('playbutton').disabled = false;
+                        lose = true; //Revisa que la pieza no este al tope y sino pierde.
+                        document.getElementById('playbutton').disabled = false;//tomamos el boton y lo activamos para reiniciar el juego
                     } 
                     return false;
                 }
@@ -190,9 +192,9 @@ function valid( offsetX, offsetY, newCurrent ) {
 
 function playButtonClicked() {
     newGame();
-    document.getElementById("playbutton").disabled = true;
+    document.getElementById("playbutton").disabled = true;//Desactiva el boton play para jugar hasta el final
 }
-
+//Crea un nuevo juego con la pantalla limpia 
 function newGame() {
     clearAllIntervals();
     intervalRender = setInterval( render, 30 );
@@ -201,7 +203,7 @@ function newGame() {
     lose = false;
     interval = setInterval( tick, 400 );
 }
-
+//limpia todo el intervalo y el render
 function clearAllIntervals(){
     clearInterval( interval );
     clearInterval( intervalRender );
