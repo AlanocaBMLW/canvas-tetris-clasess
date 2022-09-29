@@ -1,15 +1,18 @@
+//uso de dom getElementsByTagName para obteber las imaganes acualizadas
 var canvas = document.getElementsByTagName( 'canvas' )[ 0 ];
+// uso de get context para retornar la imagen actuzlizada de cada  imagen
 var ctx = canvas.getContext( '2d' );
+
 var W = 300, H = 600;
 var BLOCK_W = W / COLS, BLOCK_H = H / ROWS;
 
-// draw a single square at (x, y)
+// marco del campo de juego 
 function drawBlock( x, y ) {
     ctx.fillRect( BLOCK_W * x, BLOCK_H * y, BLOCK_W - 1 , BLOCK_H - 1 );
     ctx.strokeRect( BLOCK_W * x, BLOCK_H * y, BLOCK_W - 1 , BLOCK_H - 1 );
 }
 
-// draws the board and the moving shape
+// dibuja el marco del campo de juego 
 function render() {
     ctx.clearRect( 0, 0, W, H );
 
