@@ -1,3 +1,4 @@
+//javasctipt uso de las flechas para mover el objeto
 document.body.onkeydown = function( e ) {
     var keys = {
         37: 'left',
